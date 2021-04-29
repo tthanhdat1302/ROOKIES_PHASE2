@@ -60,30 +60,3 @@ stages:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
           ArtifactName: 'RookieOnlineAssetManagement'
           publishLocation: 'Container'
-  displayName: Build and Push Docker Images
-  jobs:  
-  - job: Build
-    displayName: Build and Push
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: DockerCompose@0
-      displayName: Build services
-      inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: $(dockerRegistryEndpoint)
-        dockerComposeFile: $(dockerComposeFile)
-        action: 'Build services'
-        projectName: $(Build.Repository.Name)
-        qualifyImageNames: true
-        additionalImageTags: $(Build.BuildId)
-    - task: DockerCompose@0
-      displayName: Push services
-      inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: $(dockerRegistryEndpoint)
-        dockerComposeFile: $(dockerComposeFile)
-        action: 'Push services'
-        projectName: $(Build.Repository.Name)
-        qualifyImageNames: true
-        additionalImageTags: $(Build.BuildId)
