@@ -18,6 +18,11 @@ stages:
     pool:
       name: Default
     steps:
+      - task: UseDotNet@2
+        displayName: Use .Net 5.0.5
+        inputs:
+          packageType: 'sdk'
+          version: '5.0.5'
       - task: DotNetCoreCLI@2
         displayName: dotnet restore
         inputs:
