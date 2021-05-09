@@ -1,6 +1,7 @@
 
 trigger:
 - main
+- master
 
 resources:
 - repo: self
@@ -19,10 +20,10 @@ stages:
       name: Default
     steps:
       - task: UseDotNet@2
-        displayName: Use .Net 5.0.5
+        displayName: Use .Net 5.0.202
         inputs:
           packageType: 'sdk'
-          version: '5.0.5'
+          version: '5.0.202'
       - task: DotNetCoreCLI@2
         displayName: dotnet restore
         inputs:
