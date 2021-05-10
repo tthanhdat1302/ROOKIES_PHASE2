@@ -18,7 +18,7 @@ export default function DisablePopUp(props) {
         </div>
         <div className="row row2_2">
           <div className="col-2">
-            <Button color="danger" >
+            <Button color="danger" onClick={() => props.onDisableUser(props.userId)}>
               Disable
             </Button>
           </div>
