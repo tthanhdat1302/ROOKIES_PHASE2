@@ -3,13 +3,80 @@ import Header from "../fragments/Header";
 import LeftSesstion from "../fragments/LeftSession";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import * as userManage from "../../actions/user";
 import { Input, Button } from "reactstrap";
 import "../../css/user_css/create.css";
 import Select from "react-select";
 import DateTimePicker from 'react-datetime-picker';
 
 export default function CreateUser() {
+  const dispatch = useDispatch();
+  const history=useHistory()
 
+  const [dateOfBirth, setDateOfBirth] = useState(new Date());
+  const [joinedDate, setJoinedDate] = useState(new Date());
+
+  const [createUser, setCreateUser] = useState({
+    FirstName: "",
+    LastName: "",
+    DateOfBirth: dateOfBirth,
+    JoinedDate: joinedDate,
+    Gender: null,
+    Type: null,
+  });
+  const [btnDisable, setBtnDisable] = useState(true);
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setCreateUser({ ...createUser, [name]: value });
+  };
+
+  const onSelectType = (e) => {
+    setCreateUser({ ...createUser, Type: e.value });
+  };
+
+  useEffect(() => {
+    if (
+      createUser.FirstName !== "" &&
+      createUser.LastName !== "" &&
+      createUser.DateOfBirth !== null &&
+      createUser.JoinedDate !== null &&
+      createUser.Type !== null &&
+      createUser.Gender!==null
+    ) {
+      setBtnDisable(false);
+    } else {
+      setBtnDisable(true);
+    }
+  }, [createUser]);
+
+  const [err,setErr]=useState({Check18YearsOld:""})
+
+  const onCreate = () => {
+    const checkDay=joinedDate.getDate()-dateOfBirth.getDate();
+    const checkMonth=joinedDate.getMonth()-dateOfBirth.getMonth();
+    const checkYear=joinedDate.getFullYear()-dateOfBirth.getFullYear();
+    if(checkDay>=0&&checkMonth==0&&checkYear==18||checkYear>18||checkYear==18&&checkMonth>0)
+    { 
+      dispatch(userManage.add_user(createUser));
+    }
+    else{
+      setErr({...err,Check18YearsOld:"Chưa đủ 18 tuổi !"})
+    }
+  };
+
+  const optionsType = [
+    { value: true, label: "Admin" },
+    { value: false, label: "Staff" },
+  ];
+
+  useEffect(()=>{
+    setCreateUser({...createUser,DateOfBirth:dateOfBirth!=null?dateOfBirth:null})
+  },[dateOfBirth])
+
+  useEffect(()=>{
+    setCreateUser({...createUser,JoinedDate:joinedDate!=null?joinedDate:null})
+  },[joinedDate])
 
   return (
     <div>
@@ -32,7 +99,7 @@ export default function CreateUser() {
                 <div className="col-8">
                   <Input
                     type="text"
-                     
+                    onChange={onChange}
                     name="FirstName"
                   ></Input>
                 </div>
@@ -45,7 +112,7 @@ export default function CreateUser() {
                 <div className="col-8">
                   <Input
                     type="text"
-                     
+                    onChange={onChange}
                     name="LastName"
                   ></Input>
                 </div>
@@ -56,7 +123,7 @@ export default function CreateUser() {
                   <label>Date of Birth</label>
                 </div>
                 <div className="col-8">
-                  <DateTimePicker  format="dd/MM/y" clearIcon maxDate={new Date()} className="dateTimeCreateUser"></DateTimePicker>
+                  <DateTimePicker onChange={setDateOfBirth} value={dateOfBirth} format="dd/MM/y" clearIcon maxDate={new Date()} className="dateTimeCreateUser"></DateTimePicker>
                 </div>
               </div>
 
@@ -67,10 +134,10 @@ export default function CreateUser() {
                 <div className="col-8">
                   <div className="row">
                     <div className="col-4 radioBtnCreateUser">
-                      <Input type="radio" /> Male
+                      <Input type="radio" value={true} onClick={()=>setCreateUser({...createUser,Gender:true})} checked={createUser.Gender===true} /> Male
                     </div>
                     <div className="col-8">
-                      <Input type="radio"  /> Female
+                      <Input type="radio" value={false} onClick={()=>setCreateUser({...createUser,Gender:false})} checked={createUser.Gender===false} /> Female
                     </div>
                   </div>               
                 </div>
@@ -81,8 +148,8 @@ export default function CreateUser() {
                   <label>Joined Date</label>
                 </div>
                 <div className="col-8">
-                  <DateTimePicker format="dd/MM/y"  className="dateTimeCreateUser"></DateTimePicker>
-                  <label className="validateErr"></label>
+                  <DateTimePicker format="dd/MM/y" onChange={setJoinedDate} value={joinedDate} clearIcon minDate={dateOfBirth} className="dateTimeCreateUser"></DateTimePicker>
+                  <label className="validateErr">{err.Check18YearsOld}</label>
                 </div>
               </div>
 
@@ -92,7 +159,8 @@ export default function CreateUser() {
                 </div>
                 <div className="col-8">
                   <Select
-                  
+                    options={optionsType}
+                    onChange={onSelectType}
                   ></Select>
                 </div>
               </div>
@@ -101,12 +169,12 @@ export default function CreateUser() {
             <div className="row">
               <div className="col-6"></div>
               <div className="col-3">
-                <Button color="danger">
+                <Button onClick={onCreate} disabled={btnDisable} color="danger">
                   Create
                 </Button>
               </div>
               <div className="col-3">
-                <Button >Cancel</Button>
+                <Button onClick={()=>history.push('/user')}>Cancel</Button>
               </div>
             </div>
           </div>
