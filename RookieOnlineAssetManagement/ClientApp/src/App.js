@@ -1,7 +1,3 @@
-// import logo from './logo.svg';
-import "./App.css";
-
-import axios from "axios";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -25,57 +21,59 @@ import CreateUserPage from "./components/users/CreateUser";
 import EditUserPage from "./components/users/EditUser";
 
 import Login from './components/login/Index'
+import axios from 'axios';
+import './App.css';
 
-axios.interceptors.request.use((config) => {
-  return config;
+axios.interceptors.request.use(config => {
+    return config;
 });
-axios.interceptors.response.use(
-  (response) => {
+console.log('in')
+axios.interceptors.response.use(response => {
+    console.log('res')
     return response;
-  },
-  (error) => {
-    console.log(error);
+}, error => {
+    console.log('er')
     if (401 === error.response.status) {
-      window.location.href =
-        "/Identity/Account/Login?returnUrl=" + window.location.pathname;
+        window.location.href = "/Identity/Account/Login?returnUrl=" + window.location.pathname;
     } else {
-      return Promise.reject(error);
+        return Promise.reject(error);
     }
-  }
-);
+});
+console.log('out')
+axios.get("/api/users").then(response => console.table(response.data));
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={HomePage}></Route>
+    return (
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/" component={HomePage}></Route>
 
-        <Route exact path="/asset" component={AssetPage}></Route>
-        <Route path="/asset/create" component={CreateAssetPage}></Route>
-        <Route path="/asset/edit/:id" component={EditAssetPage}></Route>
+                <Route exact path="/asset" component={AssetPage}></Route>
+                <Route path="/asset/create" component={CreateAssetPage}></Route>
+                <Route path="/asset/edit/:id" component={EditAssetPage}></Route>
 
-        <Route exact path="/assignment" component={AssignmentPage}></Route>
-        <Route
-          path="/assignment/create"
-          component={CreateAssignmentPage}
-        ></Route>
-        <Route
-          path="/assignment/edit/:id"
-          component={EditAssignmentPage}
-        ></Route>
+                <Route exact path="/assignment" component={AssignmentPage}></Route>
+                <Route
+                    path="/assignment/create"
+                    component={CreateAssignmentPage}
+                ></Route>
+                <Route
+                    path="/assignment/edit/:id"
+                    component={EditAssignmentPage}
+                ></Route>
 
-        <Route exact path="/report" component={ReportPage}></Route>
+                <Route exact path="/report" component={ReportPage}></Route>
 
-        <Route exact path="/return" component={ReturnRequestPage}></Route>
+                <Route exact path="/return" component={ReturnRequestPage}></Route>
 
-        <Route exact path="/user" component={ManageUsersPage}></Route>
-        <Route path="/user/create" component={CreateUserPage}></Route>
-        <Route path="/user/edit/:id" component={EditUserPage}></Route>
+                <Route exact path="/user" component={ManageUsersPage}></Route>
+                <Route path="/user/create" component={CreateUserPage}></Route>
+                <Route path="/user/edit/:id" component={EditUserPage}></Route>
 
-        <Route exact path="/login" component={Login}></Route>
-      </Switch>
-    </BrowserRouter>
-  );
+                <Route exact path="/login" component={Login}></Route>
+            </Switch>
+        </BrowserRouter>
+    );
 }
 
 export default App;
