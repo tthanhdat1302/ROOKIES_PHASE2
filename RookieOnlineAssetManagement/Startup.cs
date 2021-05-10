@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RookieOnlineAssetManagement.Data;
 using RookieOnlineAssetManagement.Entities;
+using RookieOnlineAssetManagement.Services.Interface;
+using RookieOnlineAssetManagement.Services.Service;
 using System.Threading.Tasks;
 
 namespace RookieOnlineAssetManagement
@@ -30,10 +33,17 @@ namespace RookieOnlineAssetManagement
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<User>(options =>
-            {
-                options.SignIn.RequireConfirmedAccount = false;
-            })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+              {
+                  options.SignIn.RequireConfirmedAccount = false;
+                  options.Password = new PasswordOptions
+                  {
+                      RequireDigit = true,
+                      RequiredLength = 6,
+                      RequireLowercase = true,
+                      RequireUppercase = false,
+                  };
+              })
+                  .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -53,6 +63,9 @@ namespace RookieOnlineAssetManagement
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            services.AddCors();
+
+            services.AddTransient<IUserService, UserService>();
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -63,10 +76,10 @@ namespace RookieOnlineAssetManagement
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            //{
-            //    serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
-            //}
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+            }
 
             if (env.IsDevelopment())
             {
@@ -79,6 +92,8 @@ namespace RookieOnlineAssetManagement
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            // app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

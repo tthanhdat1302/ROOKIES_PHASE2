@@ -36,13 +36,13 @@ namespace RookieOnlineAssetManagement.Services.Service
         public async Task<IEnumerable<UserModel>> GetUsers()
         {
             return await _dbContext.Users
-                .Select(x => new UserModel { Id = x.Id, StaffCode = x.StaffCode, FirstName = x.FirstName, LastName = x.LastName, UserName = x.UserName, DateOfBirth = x.DateOfBirth, Gender = x.Gender, JoinedDate = x.JoinedDate, Type = x.Type, Disable = x.Disable, Location = x.Location }).Where(x => x.Disable == false)
+                .Select(x => new UserModel { Id = x.Id, StaffCode = x.StaffCode, FirstName = x.FirstName, LastName = x.LastName, UserName = x.UserName, DateOfBirth = x.DateofBirth, Gender = x.Gender, JoinedDate = x.JoinedDate, Type = x.Type, Disable = x.Disable, Location = x.Location }).Where(x => x.Disable == false)
                 .ToListAsync();
         }
         public async Task<UserModel> GetUsersById(int id)
         {
             return await _dbContext.Users
-                .Select(x => new UserModel { Id = x.Id, StaffCode = x.StaffCode, FirstName = x.FirstName, LastName = x.LastName, UserName = x.UserName, DateOfBirth = x.DateOfBirth, Gender = x.Gender, JoinedDate = x.JoinedDate, Type = x.Type, Disable = x.Disable, Location = x.Location }).FirstOrDefaultAsync(x => x.Disable == false && x.Id == id);
+                .Select(x => new UserModel { Id = x.Id, StaffCode = x.StaffCode, FirstName = x.FirstName, LastName = x.LastName, UserName = x.UserName, DateOfBirth = x.DateofBirth, Gender = x.Gender, JoinedDate = x.JoinedDate, Type = x.Type, Disable = x.Disable, Location = x.Location }).FirstOrDefaultAsync(x => x.Disable == false && x.Id == id);
         }
 
         public async Task CreateUser(CreateUserModel createUserModel)
@@ -70,7 +70,7 @@ namespace RookieOnlineAssetManagement.Services.Service
                 FirstName = createUserModel.FirstName,
                 LastName = createUserModel.LastName,
                 UserName = userNameSub,
-                DateOfBirth = createUserModel.DateOfBirth,
+                DateofBirth = createUserModel.DateOfBirth,
                 JoinedDate = createUserModel.JoinedDate,
                 Gender = createUserModel.Gender,
                 Type = createUserModel.Type,
@@ -78,7 +78,7 @@ namespace RookieOnlineAssetManagement.Services.Service
                 Disable = false,
                 Location = createUserModel.Location
             };
-            var subString=user.DateOfBirth.ToString().Substring(0,8);
+            var subString=user.DateofBirth.ToString().Substring(0,8);
             var split=subString.Split("/");
             split[0]=split[0].PadLeft(2,'0');
             split[1]=split[1].PadLeft(2,'0');
@@ -98,7 +98,7 @@ namespace RookieOnlineAssetManagement.Services.Service
         public async Task UpdateUser(int id, CreateUserModel createUserModel)
         {
             var selectUser = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
-            selectUser.DateOfBirth = createUserModel.DateOfBirth;
+            selectUser.DateofBirth = createUserModel.DateOfBirth;
             selectUser.Gender = createUserModel.Gender;
             selectUser.JoinedDate = createUserModel.JoinedDate;
             selectUser.Type = createUserModel.Type;
