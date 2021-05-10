@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../fragments/Header";
 import LeftSesstion from "../fragments/LeftSession";
 import { useDispatch, useSelector } from "react-redux";
+import * as userManage from "../../actions/user";
 import Select from "react-select";
 import { Button, Input, Table } from "reactstrap";
 import "../../css/user_css/index.css";
@@ -17,7 +18,69 @@ import DisablePopUp from './DisablePopUp';
 import DetailPopUp from './DetailPopUp';
 
 export default function Index() {
+  const dispatch = useDispatch();
+  const history = useHistory();
 
+  useEffect(() => {
+    dispatch(userManage.get_user_list());
+  }, []);
+
+  const getUserList = useSelector((state) => state.user.userList);
+
+  const [userList, setUserList] = useState([]);
+
+  useEffect(() => {
+    setUserList(getUserList);
+    console.log(userList)
+  }, [getUserList]);
+
+  const options = [
+    { value: null, label: "All" },
+    { value: true, label: "Admin" },
+    { value: false, label: "Staff" },
+  ];
+
+  const pushToCreateUserPage = () => {
+    history.push("/user/create");
+  };
+
+  const [searchInput, setSearchInput] = useState("");
+  const onChangeSearch = (e) => {
+    setSearchInput(e.target.value);
+  };
+
+  const BtnSearch = () => {
+    if (searchInput != "") {
+      setUserList(
+        getUserList.filter(
+          (x) =>
+            x.staffCode == searchInput ||
+            x.lastName.toLowerCase().startsWith(searchInput.toLowerCase()) ||
+            x.firstName.toLowerCase().startsWith(searchInput.toLowerCase())
+        )
+      );
+    } else {
+      setUserList(getUserList);
+    }
+  };
+
+  const onDisableUser = (id) => {
+    dispatch(userManage.disable_user(id));
+  };
+
+  const onFilterType = (e) => {
+    switch (e.value) {
+      case null:
+        setUserList(getUserList);
+        break;
+      case true:
+        setUserList(getUserList.filter((x) => x.type === true));
+        break;
+      case false:
+        setUserList(getUserList.filter((x) => x.type === false));
+        break;
+    }
+  };
 
   return (
     <div>
@@ -37,19 +100,19 @@ export default function Index() {
             <div className="row" id="secondRowInRight">
               <div className="col-3">
                 <Select
-                 
+                  options={options}
                   placeholder="Type"
-                
+                  onChange={onFilterType}
                 ></Select>
               </div>
               <div className="col-6" id="searchInput">
-                <Input ></Input>
-                <Button color="primary" >
+                <Input onChange={onChangeSearch}></Input>
+                <Button color="primary" onClick={BtnSearch}>
                   <FontAwesomeIcon icon={faSearch} />
                 </Button>
               </div>
               <div className="col-3">
-                <Button color="danger" >
+                <Button color="danger" onClick={pushToCreateUserPage}>
                   Create new user
                 </Button>
               </div>
@@ -66,7 +129,45 @@ export default function Index() {
                 </tr>
               </thead>
               <tbody>
-               
+                {userList.map((user, index) => (
+                  <tr key={index}>
+                    <td>{user.staffCode}</td>
+                    <Popup modal trigger={<td>{user.lastName + " " + user.firstName}</td>}>
+                        {(close) => (
+                         <DetailPopUp close={close} user={user}></DetailPopUp>
+                        )}
+                    </Popup>
+
+                    <td>{user.userName}</td>
+
+                    <Popup modal trigger={<td>{new Date(user.joinedDate).toLocaleDateString()}</td>}>
+                        {(close) => (
+                         <DetailPopUp close={close} user={user}></DetailPopUp>
+                        )}
+                    </Popup>
+                    
+                    <Popup modal trigger={<td>{user.type ? "Admin" : "Staff"}</td>}>
+                        {(close) => (
+                         <DetailPopUp close={close} user={user}></DetailPopUp>
+                        )}
+                    </Popup>
+
+                    <td id="userListLastTd">
+                      <FontAwesomeIcon
+                        icon={faPen}
+                        className="cursorIcon"
+                        onClick={() => history.push(`/user/edit/${user.id}`)}
+                      />
+                    </td>
+                    <td id="userListLastTd">
+                      <Popup modal trigger={<FontAwesomeIcon icon={faTimesCircle} color="red" className="cursorIcon"/>}>
+                        {(close) => (
+                         <DisablePopUp close={close} userId={user.id} onDisableUser={onDisableUser}></DisablePopUp>
+                        )}
+                      </Popup>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </Table>
           </div>
