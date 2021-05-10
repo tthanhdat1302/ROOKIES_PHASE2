@@ -1,15 +1,15 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace RookieOnlineAssetManagement.Entities
 {
     public class Category
     {
-        public int Id { get; set; }
+        [Key]
+        public string Id { get; set; }
         public string CategoryName { get; set; }
+
         public string Prefix { get; set; }
-        
+        public virtual ICollection<Asset> Assets { get; set; }
     }
 }

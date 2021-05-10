@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RookieOnlineAssetManagement.Entities
 {
     public class Asset
     {
+        [Key]
         public string Id { get; set; }
-        public int CategoryId { get; set; }
         public string AssetName { get; set; }
         public string Specification { get; set; }
         public DateTime InstalledDate { get; set; }
-        public string Address { get; set; }
-        public Category Category { get; set; }
         public StateAsset StateAsset { get; set; }
-        public string Location { get; set; }
+        [ForeignKey("CateIdAsset")]
+        public string CategoryId { get; set; }
+        public Category Category { get; set; }
 
 
     }
@@ -30,7 +29,7 @@ namespace RookieOnlineAssetManagement.Entities
         Waitingforrecycling = 2,
         [Description("Available")]
         Recycled = 3,
-          [Description("Assigned")]
+        [Description("Assigned")]
         Assigned = 4
     }
 }

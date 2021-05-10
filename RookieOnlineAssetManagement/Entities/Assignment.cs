@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RookieOnlineAssetManagement.Entities
 {
     public class Assignment
     {
+        [Key]
         public int Id { get; set; }
         public string AssetId { get; set; }
         public int BorrowerId { get; set; }
@@ -31,7 +30,5 @@ namespace RookieOnlineAssetManagement.Entities
         Waitingforreturning = 0,
         [Description("Completed")]
         Completed = 1,
-
-
     }
 }

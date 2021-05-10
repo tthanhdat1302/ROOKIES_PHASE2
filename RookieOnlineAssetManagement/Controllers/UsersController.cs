@@ -3,10 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RookieOnlineAssetManagement.Data;
-using RookieOnlineAssetManagement.Models;
+using RookieOnlineAssetManagement.Entities;
+using RookieOnlineAssetManagement.Models.User;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RookieOnlineAssetManagement.Services.Interface;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace RookieOnlineAssetManagement.Controllers
 {
@@ -16,25 +20,64 @@ namespace RookieOnlineAssetManagement.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly IUserService _userService;
         private readonly ILogger _logger;
-        private readonly ApplicationDbContext _dbContext;
 
-        public UsersController(ILogger<UsersController> logger, ApplicationDbContext dbContext)
+        public UsersController(IUserService userService, ILogger<UsersController> logger)
         {
+            _userService = userService;
             _logger = logger;
-            _dbContext = dbContext;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserModel>>> Get()
+        public async Task<ActionResult<IEnumerable<UserModel>>> GetUsers()
         {
-            _logger.LogInformation("Getting all products");
-            return Ok(await _dbContext.Users.Select(x => new UserModel
-            {
-                Id = x.Id,
-                UserName = x.UserName,
-                Email = x.Email
-            }).ToListAsync());
+            _logger.LogInformation("Getting all users");
+            var result = await _userService.GetUsers();
+            return Ok(result);
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserModel>> GetUsersById(int id)
+        {
+            return await _userService.GetUsersById(id);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateUser(CreateUserModel createUserModel)
+        {
+            await _userService.CreateUser(createUserModel);
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateUser(int id, CreateUserModel createUserModel)
+        {
+            await _userService.UpdateUser(id, createUserModel);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("disable/{id}")]
+        public async Task<ActionResult> DisableUser(int id)
+        {
+            await _userService.DisableUser(id);
+            return Ok();
+        }
+        [HttpGet]
+        [Route("iduserlogin")]
+        public string GetIdUserLogin()
+        {
+
+            return _userService.GetIdUserLogin();
+        }
+        [HttpGet]
+        [Route("infouserlogin")]
+        public async Task<ActionResult> GetInfoUserLogin()
+        {
+
+          return Ok(await _userService.GetInfoUserLogin());
+        }
+
+
     }
 }

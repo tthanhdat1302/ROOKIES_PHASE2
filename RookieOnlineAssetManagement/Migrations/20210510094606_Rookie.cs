@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RookieOnlineAssetManagement.Migrations
 {
-    public partial class initalDB : Migration
+    public partial class Rookie : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
