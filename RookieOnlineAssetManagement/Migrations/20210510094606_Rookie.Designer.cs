@@ -10,8 +10,8 @@ using RookieOnlineAssetManagement.Data;
 namespace RookieOnlineAssetManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210510065815_initalDB")]
-    partial class initalDB
+    [Migration("20210510094606_Rookie")]
+    partial class Rookie
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
