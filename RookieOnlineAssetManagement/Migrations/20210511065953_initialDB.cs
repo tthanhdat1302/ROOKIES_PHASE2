@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RookieOnlineAssetManagement.Migrations
 {
-    public partial class Rookie : Migration
+    public partial class initialDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -269,12 +269,12 @@ namespace RookieOnlineAssetManagement.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Disable", "Email", "EmailConfirmed", "FirstName", "Gender", "JoinedDate", "LastName", "Location", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StaffCode", "TwoFactorEnabled", "Type", "UserName" },
-                values: new object[] { 1, 0, "ea09345e-92fd-4496-9f67-0b70780bc48e", new DateTime(1999, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), false, "dattt", true, "Dat", true, new DateTime(2021, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Tran Thanh", "HCM", false, null, "DATT", "DATTT", "AQAAAAEAACcQAAAAECOOGFlMOffIuUM/nnvm703qFtgtzLxoNtnNS+Yi0O4HcL4LVwHsCgxamgqA2CaUgg==", null, false, "", "SD0001", false, true, "dattt" });
+                values: new object[] { 1, 0, "6b810f4a-62a6-403a-8912-a7e82cd9086d", new DateTime(1999, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), false, "dattt", true, "Dat", true, new DateTime(2021, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Tran Thanh", "HCM", false, null, "DATT", "DATTT", "AQAAAAEAACcQAAAAEPuabf+lbWYeWTvkfE6rADokQ1BAVkodo9g43KFfhXtCCIU4/8scrhem/t5xmYrpkg==", null, false, "", "SD0001", false, true, "dattt" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Disable", "Email", "EmailConfirmed", "FirstName", "Gender", "JoinedDate", "LastName", "Location", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StaffCode", "TwoFactorEnabled", "Type", "UserName" },
-                values: new object[] { 2, 0, "3115fb0b-8b9a-4484-8403-ba4b1b221b02", new DateTime(1999, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), false, "vuongnv", true, "Vuong", true, new DateTime(2021, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nguyen Van", "HN", false, null, "VUONGNV", "VUONGNV", "AQAAAAEAACcQAAAAEODjJsvE6DtyVfIRK06qNjPWySsWJXL+Am2jy0WpfdBRZ4YOTAilyE1ctM/9YFws5w==", null, false, "", "SD0002", false, true, "vuongnv" });
+                values: new object[] { 2, 0, "86680b47-8a73-4f56-8c68-4d1625054501", new DateTime(1999, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), false, "vuongnv", true, "Vuong", true, new DateTime(2021, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nguyen Van", "HN", false, null, "VUONGNV", "VUONGNV", "AQAAAAEAACcQAAAAEF47MQRlgRneb3yrl9WBYMVAidMJnMmGFmLEOxhLJAgw5yE+AobtfxAOMSLXVeH7lw==", null, false, "", "SD0002", false, true, "vuongnv" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
