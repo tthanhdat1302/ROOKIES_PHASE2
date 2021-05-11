@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -25,6 +25,8 @@ import { useDispatch, useSelector } from "react-redux";
 import * as userManage from "./actions/user";
 import axios from "axios";
 import "./App.css";
+import Header from "./components/fragments/Header";
+import LeftSession from "./components/fragments/LeftSession";
 
 axios.interceptors.request.use((config) => {
   return config;
@@ -50,43 +52,49 @@ function App() {
   }, []);
   const getUserLogin = useSelector((state) => state.user.userLogin);
   let userLogin = getUserLogin;
+  const [pageName,setPageName]=useState("")
   return (
     <BrowserRouter>
+      <Header page={pageName}></Header>
+      <div className="row">
+        <div className="col-3">
+          <LeftSession></LeftSession>
+        </div>
       {userLogin.type == true ? (
         <Switch>
-          <Route exact path="/" component={HomePage}></Route>
+          <Route exact path="/"><HomePage setPageName={setPageName}></HomePage></Route>
 
-          <Route exact path="/asset" component={AssetPage}></Route>
-          <Route path="/asset/create" component={CreateAssetPage}></Route>
-          <Route path="/asset/edit/:id" component={EditAssetPage}></Route>
+          <Route exact path="/asset" ><AssetPage setPageName={setPageName}></AssetPage></Route>
+          <Route path="/asset/create" ><CreateAssetPage setPageName={setPageName}></CreateAssetPage></Route>
+          <Route path="/asset/edit/:id" ><EditAssetPage setPageName={setPageName}></EditAssetPage></Route>
 
-          <Route exact path="/assignment" component={AssignmentPage}></Route>
+          <Route exact path="/assignment" ><AssignmentPage setPageName={setPageName}></AssignmentPage></Route>
           <Route
             path="/assignment/create"
-            component={CreateAssignmentPage}
-          ></Route>
+            
+          ><CreateAssignmentPage setPageName={setPageName}></CreateAssignmentPage></Route>
           <Route
             path="/assignment/edit/:id"
-            component={EditAssignmentPage}
-          ></Route>
+           
+          ><EditAssignmentPage setPageName={setPageName}></EditAssignmentPage></Route>
 
-          <Route exact path="/report" component={ReportPage}></Route>
+          <Route exact path="/report" ><ReportPage setPageName={setPageName}></ReportPage></Route>
 
-          <Route exact path="/return" component={ReturnRequestPage}></Route>
+          <Route exact path="/return" ><ReturnRequestPage setPageName={setPageName}></ReturnRequestPage></Route>
 
           <Route exact path="/user">
-            <ManageUsersPage userLogin={userLogin}></ManageUsersPage>
+            <ManageUsersPage  setPageName={setPageName}></ManageUsersPage>
           </Route>
           <Route path="/user/create">
-            <CreateUserPage userLogin={userLogin}></CreateUserPage>
+            <CreateUserPage setPageName={setPageName} userLogin={userLogin}></CreateUserPage>
           </Route>
-          <Route path="/user/edit/:id" component={EditUserPage}></Route>
+          <Route path="/user/edit/:id"  ><EditUserPage setPageName={setPageName}></EditUserPage></Route>
         </Switch>
       ) : (
         <Switch>
-          <Route exact path="/" component={HomePage}></Route>
+          <Route exact path="/" ><HomePage setPageName={setPageName}></HomePage></Route>
         </Switch>
-      )}
+      )}      </div>
     </BrowserRouter>
   );
 }
