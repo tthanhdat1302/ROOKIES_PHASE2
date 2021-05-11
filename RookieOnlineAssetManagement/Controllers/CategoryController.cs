@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RookieOnlineAssetManagement.Entities;
 using RookieOnlineAssetManagement.Models;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace RookieOnlineAssetManagement.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 

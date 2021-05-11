@@ -11,6 +11,8 @@ using RookieOnlineAssetManagement.Entities;
 using RookieOnlineAssetManagement.Services.Implement;
 using RookieOnlineAssetManagement.Services.Interface;
 using RookieOnlineAssetManagement.Services.Service;
+using RookieShop.Backend.Services.Implement;
+using RookieShop.Backend.Services.Interface;
 using System.Threading.Tasks;
 
 namespace RookieOnlineAssetManagement
@@ -69,6 +71,7 @@ namespace RookieOnlineAssetManagement
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICaTegoryRepository, CategoryRepository>();
+            services.AddTransient<IAssetRepository, AssetRepository>();
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
