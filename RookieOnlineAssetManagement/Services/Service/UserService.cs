@@ -80,7 +80,7 @@ namespace RookieOnlineAssetManagement.Services.Service
                 Disable = false,
                 Location = createUserModel.Location
             };
-            var subString=user.DateOfBirth.ToString().Substring(0,8);
+            var subString=user.DateOfBirth.ToString().Substring(0,9);
             var split=subString.Split("/");
             split[0]=split[0].PadLeft(2,'0');
             split[1]=split[1].PadLeft(2,'0');
