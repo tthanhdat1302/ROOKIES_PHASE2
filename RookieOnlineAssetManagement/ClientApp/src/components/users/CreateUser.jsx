@@ -7,15 +7,16 @@ import * as userManage from "../../actions/user";
 import { Input, Button } from "reactstrap";
 import "../../css/user_css/create.css";
 import Select from "react-select";
-import DateTimePicker from 'react-datetime-picker';
+import DateTimePicker from "react-datetime-picker";
 
-export default function CreateUser() {
+export default function CreateUser(props) {
   const dispatch = useDispatch();
-  const history=useHistory()
+  const history = useHistory();
 
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [joinedDate, setJoinedDate] = useState(new Date());
 
+  const location = props.userLogin.location;
   const [createUser, setCreateUser] = useState({
     FirstName: "",
     LastName: "",
@@ -23,7 +24,17 @@ export default function CreateUser() {
     JoinedDate: joinedDate,
     Gender: null,
     Type: null,
+    Location: "",
   });
+
+  try {
+    if (createUser.Location == ""&&location!=undefined) {
+      setCreateUser({ ...createUser, Location: location });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+
   const [btnDisable, setBtnDisable] = useState(true);
 
   const onChange = (e) => {
@@ -42,7 +53,7 @@ export default function CreateUser() {
       createUser.DateOfBirth !== null &&
       createUser.JoinedDate !== null &&
       createUser.Type !== null &&
-      createUser.Gender!==null
+      createUser.Gender !== null
     ) {
       setBtnDisable(false);
     } else {
@@ -50,18 +61,20 @@ export default function CreateUser() {
     }
   }, [createUser]);
 
-  const [err,setErr]=useState({Check18YearsOld:""})
+  const [err, setErr] = useState({ Check18YearsOld: "" });
 
   const onCreate = () => {
-    const checkDay=joinedDate.getDate()-dateOfBirth.getDate();
-    const checkMonth=joinedDate.getMonth()-dateOfBirth.getMonth();
-    const checkYear=joinedDate.getFullYear()-dateOfBirth.getFullYear();
-    if(checkDay>=0&&checkMonth==0&&checkYear==18||checkYear>18||checkYear==18&&checkMonth>0)
-    { 
+    const checkDay = joinedDate.getDate() - dateOfBirth.getDate();
+    const checkMonth = joinedDate.getMonth() - dateOfBirth.getMonth();
+    const checkYear = joinedDate.getFullYear() - dateOfBirth.getFullYear();
+    if (
+      (checkDay >= 0 && checkMonth == 0 && checkYear == 18) ||
+      checkYear > 18 ||
+      (checkYear == 18 && checkMonth > 0)
+    ) {
       dispatch(userManage.add_user(createUser));
-    }
-    else{
-      setErr({...err,Check18YearsOld:"Chưa đủ 18 tuổi !"})
+    } else {
+      setErr({ ...err, Check18YearsOld: "Chưa đủ 18 tuổi !" });
     }
   };
 
@@ -70,13 +83,19 @@ export default function CreateUser() {
     { value: false, label: "Staff" },
   ];
 
-  useEffect(()=>{
-    setCreateUser({...createUser,DateOfBirth:dateOfBirth!=null?dateOfBirth:null})
-  },[dateOfBirth])
+  useEffect(() => {
+    setCreateUser({
+      ...createUser,
+      DateOfBirth: dateOfBirth != null ? dateOfBirth : null,
+    });
+  }, [dateOfBirth]);
 
-  useEffect(()=>{
-    setCreateUser({...createUser,JoinedDate:joinedDate!=null?joinedDate:null})
-  },[joinedDate])
+  useEffect(() => {
+    setCreateUser({
+      ...createUser,
+      JoinedDate: joinedDate != null ? joinedDate : null,
+    });
+  }, [joinedDate]);
 
   return (
     <div>
@@ -123,7 +142,14 @@ export default function CreateUser() {
                   <label>Date of Birth</label>
                 </div>
                 <div className="col-8">
-                  <DateTimePicker onChange={setDateOfBirth} value={dateOfBirth} format="dd/MM/y" clearIcon maxDate={new Date()} className="dateTimeCreateUser"></DateTimePicker>
+                  <DateTimePicker
+                    onChange={setDateOfBirth}
+                    value={dateOfBirth}
+                    format="dd/MM/y"
+                    clearIcon
+                    maxDate={new Date()}
+                    className="dateTimeCreateUser"
+                  ></DateTimePicker>
                 </div>
               </div>
 
@@ -134,12 +160,28 @@ export default function CreateUser() {
                 <div className="col-8">
                   <div className="row">
                     <div className="col-4 radioBtnCreateUser">
-                      <Input type="radio" value={true} onClick={()=>setCreateUser({...createUser,Gender:true})} checked={createUser.Gender===true} /> Male
+                      <Input
+                        type="radio"
+                        value={true}
+                        onClick={() =>
+                          setCreateUser({ ...createUser, Gender: true })
+                        }
+                        checked={createUser.Gender === true}
+                      />{" "}
+                      Male
                     </div>
                     <div className="col-8">
-                      <Input type="radio" value={false} onClick={()=>setCreateUser({...createUser,Gender:false})} checked={createUser.Gender===false} /> Female
+                      <Input
+                        type="radio"
+                        value={false}
+                        onClick={() =>
+                          setCreateUser({ ...createUser, Gender: false })
+                        }
+                        checked={createUser.Gender === false}
+                      />{" "}
+                      Female
                     </div>
-                  </div>               
+                  </div>
                 </div>
               </div>
 
@@ -148,7 +190,14 @@ export default function CreateUser() {
                   <label>Joined Date</label>
                 </div>
                 <div className="col-8">
-                  <DateTimePicker format="dd/MM/y" onChange={setJoinedDate} value={joinedDate} clearIcon minDate={dateOfBirth} className="dateTimeCreateUser"></DateTimePicker>
+                  <DateTimePicker
+                    format="dd/MM/y"
+                    onChange={setJoinedDate}
+                    value={joinedDate}
+                    clearIcon
+                    minDate={dateOfBirth}
+                    className="dateTimeCreateUser"
+                  ></DateTimePicker>
                   <label className="validateErr">{err.Check18YearsOld}</label>
                 </div>
               </div>
@@ -174,7 +223,7 @@ export default function CreateUser() {
                 </Button>
               </div>
               <div className="col-3">
-                <Button onClick={()=>history.push('/user')}>Cancel</Button>
+                <Button onClick={() => history.push("/user")}>Cancel</Button>
               </div>
             </div>
           </div>

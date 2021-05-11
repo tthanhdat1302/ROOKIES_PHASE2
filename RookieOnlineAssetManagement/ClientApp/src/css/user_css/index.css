@@ -50,3 +50,21 @@
 .row2_2 .col-2{
     margin-right: 15px;
 }
+
+.detailUserPopUp{
+    border: 1px solid rgb(95, 95, 95);
+    height: 300px;
+    display: flex;
+    align-content: center;
+    padding-left: 20px;
+    background-color: white;
+}
+
+.detailUserPopUp .row{
+    margin-bottom: 10px;
+}
+
+#closeDetail{
+    margin-left: 150px;
+    font-size: 24px;
+}

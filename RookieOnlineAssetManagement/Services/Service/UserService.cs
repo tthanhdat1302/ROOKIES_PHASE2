@@ -20,29 +20,30 @@ namespace RookieOnlineAssetManagement.Services.Service
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IHttpContextAccessor _httpAccessor;
-        private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<User> _roleManager;
 
-        public UserService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor, UserManager<User> userManager,
-            SignInManager<User> signInManager)
+
+        public UserService(ApplicationDbContext dbContext, IHttpContextAccessor httpAccessor, UserManager<User> userManager)
         {
             _dbContext = dbContext;
             _httpAccessor = httpAccessor;
-            _signInManager = signInManager;
             _userManager = userManager;
         }
 
         public async Task<IEnumerable<UserModel>> GetUsers()
         {
             return await _dbContext.Users
-                .Select(x => new UserModel { Id = x.Id, StaffCode = x.StaffCode, FirstName = x.FirstName, LastName = x.LastName, UserName = x.UserName, DateOfBirth = x.DateOfBirth, Gender = x.Gender, JoinedDate = x.JoinedDate, Type = x.Type, Disable = x.Disable, Location = x.Location }).Where(x => x.Disable == false)
+                .Select(x => new UserModel { Id = x.Id, StaffCode = x.StaffCode, FirstName = x.FirstName, LastName = x.LastName,
+                UserName = x.UserName, DateOfBirth = x.DateOfBirth, Gender = x.Gender, JoinedDate = x.JoinedDate, Type = x.Type,
+                Disable = x.Disable, Location = x.Location }).Where(x => x.Disable == false)
                 .ToListAsync();
         }
         public async Task<UserModel> GetUsersById(int id)
         {
             return await _dbContext.Users
-                .Select(x => new UserModel { Id = x.Id, StaffCode = x.StaffCode, FirstName = x.FirstName, LastName = x.LastName, UserName = x.UserName, DateOfBirth = x.DateOfBirth, Gender = x.Gender, JoinedDate = x.JoinedDate, Type = x.Type, Disable = x.Disable, Location = x.Location }).FirstOrDefaultAsync(x => x.Disable == false && x.Id == id);
+                .Select(x => new UserModel { Id = x.Id, StaffCode = x.StaffCode, FirstName = x.FirstName, LastName = x.LastName,
+                UserName = x.UserName, DateOfBirth = x.DateOfBirth, Gender = x.Gender, JoinedDate = x.JoinedDate, Type = x.Type,
+                Disable = x.Disable, Location = x.Location }).FirstOrDefaultAsync(x => x.Disable == false && x.Id == id);
         }
 
         public async Task CreateUser(CreateUserModel createUserModel)
@@ -55,7 +56,8 @@ namespace RookieOnlineAssetManagement.Services.Service
                 string lower = name.ToLower();
                 userName += lower.Substring(0, 1);
             }
-            var find = _dbContext.Users.Where(x => x.FirstName.Equals(createUserModel.FirstName) && x.LastName.Equals(createUserModel.LastName)).ToList();
+            var find = _dbContext.Users.Where(x => x.FirstName.Equals(createUserModel.FirstName) 
+            && x.LastName.Equals(createUserModel.LastName)).ToList();
             var count = find.Count();
             if (count != 0)
             {
