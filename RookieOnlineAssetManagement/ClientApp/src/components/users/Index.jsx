@@ -178,7 +178,7 @@ export default function Index(props) {
                     trigger={
                       <FontAwesomeIcon
                         icon={faTimesCircle}
-                        color="red"
+                        color='rgb(207, 35, 56)'
                         className="cursor"
                       />
                     }

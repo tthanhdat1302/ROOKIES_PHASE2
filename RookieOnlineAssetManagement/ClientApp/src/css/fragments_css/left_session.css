@@ -30,7 +30,8 @@
   margin-bottom: 2px;
 }
 
+
 .menuBtn:focus {
-  background-color: rgb(207, 35, 56);
-  color: white;
-}
+    background-color: rgb(207, 35, 56);
+    color: white;
+  }
