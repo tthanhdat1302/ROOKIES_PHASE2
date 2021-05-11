@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import "../../css/fragments_css/header.css";
 import { Dropdown } from "react-bootstrap";
+import {useSelector} from 'react-redux'
 
 export default function Header(props) {
+  const getUserList = useSelector((state) => state.user.userLogin);
+  let userLogin = getUserList;
   return (
     <div id="header">
       <label id="lblNav">{props.page}</label>
       <div id="dropdown-nav">
         <Dropdown>
           <Dropdown.Toggle variant="danger" size="sm" id="dropdown-basic">
-            dattt
+            {userLogin.userName}
           </Dropdown.Toggle>
 
           <Dropdown.Menu>

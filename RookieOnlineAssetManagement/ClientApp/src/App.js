@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -20,60 +21,63 @@ import ManageUsersPage from "./components/users/Index";
 import CreateUserPage from "./components/users/CreateUser";
 import EditUserPage from "./components/users/EditUser";
 
-import Login from './components/login/Index'
-import axios from 'axios';
-import './App.css';
+import { useDispatch,useSelector } from "react-redux";
+import * as userManage from "./actions/user";
+import axios from "axios";
+import "./App.css";
 
-axios.interceptors.request.use(config => {
-    return config;
+axios.interceptors.request.use((config) => {
+  return config;
 });
-console.log('in')
-axios.interceptors.response.use(response => {
-    console.log('res')
+axios.interceptors.response.use(
+  (response) => {
     return response;
-}, error => {
-    console.log('er')
+  },
+  (error) => {
     if (401 === error.response.status) {
-        window.location.href = "/Identity/Account/Login?returnUrl=" + window.location.pathname;
+      window.location.href =
+        "/Identity/Account/Login?returnUrl=" + window.location.pathname;
     } else {
-        return Promise.reject(error);
+      return Promise.reject(error);
     }
-});
-console.log('out')
-axios.get("/api/users").then(response => console.table(response.data));
+  }
+);
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Switch>
-                <Route exact path="/" component={HomePage}></Route>
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(userManage.get_user_login());
+  }, []);
+  const getUserList = useSelector((state) => state.user.userLogin);
+  let userLogin = getUserList;
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={HomePage}></Route>
 
-                <Route exact path="/asset" component={AssetPage}></Route>
-                <Route path="/asset/create" component={CreateAssetPage}></Route>
-                <Route path="/asset/edit/:id" component={EditAssetPage}></Route>
+        <Route exact path="/asset" component={AssetPage}></Route>
+        <Route path="/asset/create" component={CreateAssetPage}></Route>
+        <Route path="/asset/edit/:id" component={EditAssetPage}></Route>
 
-                <Route exact path="/assignment" component={AssignmentPage}></Route>
-                <Route
-                    path="/assignment/create"
-                    component={CreateAssignmentPage}
-                ></Route>
-                <Route
-                    path="/assignment/edit/:id"
-                    component={EditAssignmentPage}
-                ></Route>
+        <Route exact path="/assignment" component={AssignmentPage}></Route>
+        <Route
+          path="/assignment/create"
+          component={CreateAssignmentPage}
+        ></Route>
+        <Route
+          path="/assignment/edit/:id"
+          component={EditAssignmentPage}
+        ></Route>
 
-                <Route exact path="/report" component={ReportPage}></Route>
+        <Route exact path="/report" component={ReportPage}></Route>
 
-                <Route exact path="/return" component={ReturnRequestPage}></Route>
+        <Route exact path="/return" component={ReturnRequestPage}></Route>
 
-                <Route exact path="/user" component={ManageUsersPage}></Route>
-                <Route path="/user/create" component={CreateUserPage}></Route>
-                <Route path="/user/edit/:id" component={EditUserPage}></Route>
-
-                <Route exact path="/login" component={Login}></Route>
-            </Switch>
-        </BrowserRouter>
-    );
+        <Route exact path="/user"><ManageUsersPage userLogin={userLogin}></ManageUsersPage></Route>
+        <Route path="/user/create" ><CreateUserPage userLogin={userLogin}></CreateUserPage></Route>
+        <Route path="/user/edit/:id" component={EditUserPage}></Route>
+      </Switch>
+    </BrowserRouter>
+  );
 }
-
 export default App;

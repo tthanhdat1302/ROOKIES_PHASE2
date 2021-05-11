@@ -39,14 +39,17 @@ namespace RookieOnlineAssetManagement.Data
                .HasForeignKey(m => m.UserAccepteId)
                .OnDelete(DeleteBehavior.Restrict)
                .IsRequired();
-                modelBuilder.Entity<User>().HasData(
-                    new User { Id = 1, StaffCode = "SD0001", Gender = true, Type = true, DateOfBirth = new DateTime(1999, 2, 13), 
-                    JoinedDate = new DateTime(2021, 3, 15), UserName = "dattt", PasswordHash = "1", FirstName = "Dat", 
-                    LastName = "Tran Thanh",Location="HCM" });
-                modelBuilder.Entity<User>().HasData(
-                    new User { Id = 2, StaffCode = "SD0002", Gender = true, Type = true, DateOfBirth = new DateTime(1999, 2, 13), 
-                    JoinedDate = new DateTime(2021, 3, 15), UserName = "vuongnv", PasswordHash = "1", FirstName = "Vuong", 
-                    LastName = "Nguyen Van",Location="HN" });
+            var hasher = new PasswordHasher<User>();
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, StaffCode = "SD0001", Gender = true, Type = true, DateOfBirth = new DateTime(1999, 2, 13), 
+                JoinedDate = new DateTime(2021, 3, 15), UserName = "dattt", PasswordHash = hasher.HashPassword(null, "dattt@123"),
+                FirstName = "Dat", LastName = "Tran Thanh",Location="HCM",NormalizedUserName="DATTT",Email="dattt",
+                NormalizedEmail="DATT",SecurityStamp = string.Empty, EmailConfirmed = true,});
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 2, StaffCode = "SD0002", Gender = true, Type = true, DateOfBirth = new DateTime(1999, 2, 13), 
+                JoinedDate = new DateTime(2021, 3, 15), UserName = "vuongnv", PasswordHash = hasher.HashPassword(null, "vuongnv@123"), 
+                FirstName = "Vuong", LastName = "Nguyen Van",Location="HN",NormalizedUserName="VUONGNV",Email="vuongnv",
+                NormalizedEmail="VUONGNV",SecurityStamp = string.Empty, EmailConfirmed = true,});
         }
     }
 }

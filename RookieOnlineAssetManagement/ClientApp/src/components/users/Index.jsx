@@ -17,7 +17,7 @@ import Popup from "reactjs-popup";
 import DisablePopUp from './DisablePopUp';
 import DetailPopUp from './DetailPopUp';
 
-export default function Index() {
+export default function Index(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -30,8 +30,7 @@ export default function Index() {
   const [userList, setUserList] = useState([]);
 
   useEffect(() => {
-    setUserList(getUserList);
-    console.log(userList)
+    setUserList(getUserList.filter(x=>x.location==props.userLogin.location));
   }, [getUserList]);
 
   const options = [
@@ -132,7 +131,7 @@ export default function Index() {
                 {userList.map((user, index) => (
                   <tr key={index}>
                     <td>{user.staffCode}</td>
-                    <Popup modal trigger={<td>{user.lastName + " " + user.firstName}</td>}>
+                    <Popup modal trigger={<td className="cursor">{user.lastName + " " + user.firstName}</td>}>
                         {(close) => (
                          <DetailPopUp close={close} user={user}></DetailPopUp>
                         )}
@@ -140,13 +139,13 @@ export default function Index() {
 
                     <td>{user.userName}</td>
 
-                    <Popup modal trigger={<td>{new Date(user.joinedDate).toLocaleDateString()}</td>}>
+                    <Popup modal trigger={<td className="cursor">{new Date(user.joinedDate).toLocaleDateString()}</td>}>
                         {(close) => (
                          <DetailPopUp close={close} user={user}></DetailPopUp>
                         )}
                     </Popup>
                     
-                    <Popup modal trigger={<td>{user.type ? "Admin" : "Staff"}</td>}>
+                    <Popup modal trigger={<td className="cursor">{user.type ? "Admin" : "Staff"}</td>}>
                         {(close) => (
                          <DetailPopUp close={close} user={user}></DetailPopUp>
                         )}
@@ -155,12 +154,12 @@ export default function Index() {
                     <td id="userListLastTd">
                       <FontAwesomeIcon
                         icon={faPen}
-                        className="cursorIcon"
+                        className="cursor"
                         onClick={() => history.push(`/user/edit/${user.id}`)}
                       />
                     </td>
                     <td id="userListLastTd">
-                      <Popup modal trigger={<FontAwesomeIcon icon={faTimesCircle} color="red" className="cursorIcon"/>}>
+                      <Popup modal trigger={<FontAwesomeIcon icon={faTimesCircle} color="red" className="cursor"/>}>
                         {(close) => (
                          <DisablePopUp close={close} userId={user.id} onDisableUser={onDisableUser}></DisablePopUp>
                         )}

@@ -10,7 +10,7 @@ using RookieOnlineAssetManagement.Data;
 namespace RookieOnlineAssetManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210510094606_Rookie")]
+    [Migration("20210510135408_Rookie")]
     partial class Rookie
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -287,7 +287,7 @@ namespace RookieOnlineAssetManagement.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateofBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Disable")
@@ -365,6 +365,58 @@ namespace RookieOnlineAssetManagement.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ea09345e-92fd-4496-9f67-0b70780bc48e",
+                            DateOfBirth = new DateTime(1999, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Disable = false,
+                            Email = "dattt",
+                            EmailConfirmed = true,
+                            FirstName = "Dat",
+                            Gender = true,
+                            JoinedDate = new DateTime(2021, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastName = "Tran Thanh",
+                            Location = "HCM",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "DATT",
+                            NormalizedUserName = "DATTT",
+                            PasswordHash = "AQAAAAEAACcQAAAAECOOGFlMOffIuUM/nnvm703qFtgtzLxoNtnNS+Yi0O4HcL4LVwHsCgxamgqA2CaUgg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            StaffCode = "SD0001",
+                            TwoFactorEnabled = false,
+                            Type = true,
+                            UserName = "dattt"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "3115fb0b-8b9a-4484-8403-ba4b1b221b02",
+                            DateOfBirth = new DateTime(1999, 2, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Disable = false,
+                            Email = "vuongnv",
+                            EmailConfirmed = true,
+                            FirstName = "Vuong",
+                            Gender = true,
+                            JoinedDate = new DateTime(2021, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastName = "Nguyen Van",
+                            Location = "HN",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "VUONGNV",
+                            NormalizedUserName = "VUONGNV",
+                            PasswordHash = "AQAAAAEAACcQAAAAEODjJsvE6DtyVfIRK06qNjPWySsWJXL+Am2jy0WpfdBRZ4YOTAilyE1ctM/9YFws5w==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            StaffCode = "SD0002",
+                            TwoFactorEnabled = false,
+                            Type = true,
+                            UserName = "vuongnv"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
