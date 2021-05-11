@@ -2,7 +2,6 @@ import React from "react";
 import { Button } from "reactstrap";
 
 export default function DisablePopUp(props) {
-
   return (
     <div className="popupDisable">
       <div className="row row1">
@@ -18,7 +17,10 @@ export default function DisablePopUp(props) {
         </div>
         <div className="row row2_2">
           <div className="col-2">
-            <Button color="danger" onClick={() => props.onDisableUser(props.userId)}>
+            <Button
+              color="danger"
+              onClick={() => props.onDisableUser(props.userId)}
+            >
               Disable
             </Button>
           </div>

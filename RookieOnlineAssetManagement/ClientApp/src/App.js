@@ -52,13 +52,15 @@ function App() {
   }, []);
   const getUserLogin = useSelector((state) => state.user.userLogin);
   let userLogin = getUserLogin;
+
   const [pageName,setPageName]=useState("")
+
   return (
     <BrowserRouter>
       <Header page={pageName}></Header>
       <div className="row">
         <div className="col-3">
-          <LeftSession></LeftSession>
+          <LeftSession pageName={pageName}></LeftSession>
         </div>
       {userLogin.type == true ? (
         <Switch>

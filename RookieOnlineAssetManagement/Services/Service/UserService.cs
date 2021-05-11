@@ -70,6 +70,7 @@ namespace RookieOnlineAssetManagement.Services.Service
             {
                 userNameSub = createUserModel.FirstName.ToLower() + userName;
             }
+            
             var user = new User
             {
                 FirstName = createUserModel.FirstName,
@@ -83,8 +84,8 @@ namespace RookieOnlineAssetManagement.Services.Service
                 Disable = false,
                 Location = createUserModel.Location
             };
-            var subString=user.DateOfBirth.ToString().Substring(0,9);
-            var split=subString.Split("/");
+            var splitSpace=user.DateOfBirth.ToString().Split(" ");
+            var split=splitSpace[0].Split("/");
             split[0]=split[0].PadLeft(2,'0');
             split[1]=split[1].PadLeft(2,'0');
             var generatePassword=user.UserName+"@"+split[1]+split[0]+split[2];

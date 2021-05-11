@@ -10,7 +10,7 @@ import Select from "react-select";
 import DateTimePicker from "react-datetime-picker";
 
 export default function CreateUser(props) {
-  props.setPageName("Manage User > Create New User")
+  props.setPageName("Manage User > Create New User");
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -87,14 +87,14 @@ export default function CreateUser(props) {
   useEffect(() => {
     setCreateUser({
       ...createUser,
-      DateOfBirth: dateOfBirth != null ? dateOfBirth : null,
+      DateOfBirth: dateOfBirth != null ? new Date(dateOfBirth.getFullYear(),dateOfBirth.getMonth(),dateOfBirth.getDate()+1) : null,
     });
   }, [dateOfBirth]);
 
   useEffect(() => {
     setCreateUser({
       ...createUser,
-      JoinedDate: joinedDate != null ? joinedDate : null,
+      JoinedDate: joinedDate != null ? new Date(joinedDate.getFullYear(),joinedDate.getMonth(),joinedDate.getDate()+1) : null,
     });
   }, [joinedDate]);
 
@@ -148,6 +148,7 @@ export default function CreateUser(props) {
               <div className="row">
                 <div className="col-4 radioBtnCreateUser">
                   <Input
+                    className="radioBtn"
                     type="radio"
                     value={true}
                     onClick={() =>
@@ -159,6 +160,7 @@ export default function CreateUser(props) {
                 </div>
                 <div className="col-8">
                   <Input
+                    className="radioBtn"
                     type="radio"
                     value={false}
                     onClick={() =>

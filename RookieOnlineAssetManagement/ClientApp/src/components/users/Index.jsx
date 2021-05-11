@@ -19,7 +19,7 @@ import DetailPopUp from "./DetailPopUp";
 import user from "../../reducers/user";
 
 export default function Index(props) {
-  props.setPageName("Manage User")
+  props.setPageName("Manage User");
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -178,7 +178,7 @@ export default function Index(props) {
                     trigger={
                       <FontAwesomeIcon
                         icon={faTimesCircle}
-                        color='rgb(207, 35, 56)'
+                        color="rgb(207, 35, 56)"
                         className="cursor"
                       />
                     }

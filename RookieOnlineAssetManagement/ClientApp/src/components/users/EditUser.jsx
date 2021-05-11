@@ -10,7 +10,7 @@ import Select from "react-select";
 import DateTimePicker from "react-datetime-picker";
 
 export default function UpdateUser(props) {
-  props.setPageName("Manage User > Edit User")
+  props.setPageName("Manage User > Edit User");
   const dispatch = useDispatch();
   const history = useHistory();
   let { id } = useParams();
@@ -29,16 +29,16 @@ export default function UpdateUser(props) {
   useEffect(() => {
     if (userByid.dateOfBirth != undefined)
       setDateOfBirth(new Date(userByid.dateOfBirth));
-  }, [userByid.dateOfBirth]);
+  }, [userByid]);
 
   useEffect(() => {
     if (userByid.joinedDate != undefined)
       setJoinedDate(new Date(userByid.joinedDate));
-  }, [userByid.joinedDate]);
-
+  }, [userByid]);
+ 
   const [updateUser, setUpdateUser] = useState({
-    DateOfBirth: stateDateOfBirth,
-    JoinedDate: stateJoinedDate,
+    DateOfBirth: null,
+    JoinedDate: null,
     Gender: null,
     Type: null,
   });
@@ -48,6 +48,8 @@ export default function UpdateUser(props) {
       ...updateUser,
       Gender: userByid.gender,
       Type: userByid.type,
+      DateOfBirth:new Date(userByid.dateOfBirth),
+      JoinedDate:new Date(userByid.joinedDate)
     });
   }, [userByid]);
 
@@ -96,14 +98,14 @@ export default function UpdateUser(props) {
   useEffect(() => {
     setUpdateUser({
       ...updateUser,
-      DateOfBirth: stateDateOfBirth != null ? stateDateOfBirth : null,
+      DateOfBirth: stateDateOfBirth != null ? new Date(stateDateOfBirth.getFullYear(),stateDateOfBirth.getMonth(),stateDateOfBirth.getDate()+1) : null,
     });
   }, [stateDateOfBirth]);
 
   useEffect(() => {
     setUpdateUser({
       ...updateUser,
-      JoinedDate: stateJoinedDate != null ? stateJoinedDate : null,
+      JoinedDate: stateJoinedDate != null ? new Date(stateJoinedDate.getFullYear(),stateJoinedDate.getMonth(),stateJoinedDate.getDate()+1) : null,
     });
   }, [stateJoinedDate]);
 
