@@ -14,24 +14,24 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 import Popup from "reactjs-popup";
-import DisablePopUp from './DisablePopUp';
-import DetailPopUp from './DetailPopUp';
+import DisablePopUp from "./DisablePopUp";
+import DetailPopUp from "./DetailPopUp";
+import user from "../../reducers/user";
 
 export default function Index(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(userManage.get_user_list());
-  }, []);
+    dispatch(userManage.get_user_list(props.userLogin));
+  }, [props]);
 
   const getUserList = useSelector((state) => state.user.userList);
-
   const [userList, setUserList] = useState([]);
 
   useEffect(() => {
-    setUserList(getUserList.filter(x=>x.location==props.userLogin.location));
-  }, [getUserList]);
+    setUserList(getUserList);
+  }, [getUserList,props]);
 
   const options = [
     { value: null, label: "All" },
@@ -131,24 +131,45 @@ export default function Index(props) {
                 {userList.map((user, index) => (
                   <tr key={index}>
                     <td>{user.staffCode}</td>
-                    <Popup modal trigger={<td className="cursor">{user.lastName + " " + user.firstName}</td>}>
-                        {(close) => (
-                         <DetailPopUp close={close} user={user}></DetailPopUp>
-                        )}
+                    <Popup
+                      modal
+                      trigger={
+                        <td className="cursor">
+                          {user.lastName + " " + user.firstName}
+                        </td>
+                      }
+                    >
+                      {(close) => (
+                        <DetailPopUp close={close} user={user}></DetailPopUp>
+                      )}
                     </Popup>
 
                     <td>{user.userName}</td>
 
-                    <Popup modal trigger={<td className="cursor">{new Date(user.joinedDate).toLocaleDateString()}</td>}>
-                        {(close) => (
-                         <DetailPopUp close={close} user={user}></DetailPopUp>
-                        )}
+                    <Popup
+                      modal
+                      trigger={
+                        <td className="cursor">
+                          {new Date(user.joinedDate).toLocaleDateString()}
+                        </td>
+                      }
+                    >
+                      {(close) => (
+                        <DetailPopUp close={close} user={user}></DetailPopUp>
+                      )}
                     </Popup>
-                    
-                    <Popup modal trigger={<td className="cursor">{user.type ? "Admin" : "Staff"}</td>}>
-                        {(close) => (
-                         <DetailPopUp close={close} user={user}></DetailPopUp>
-                        )}
+
+                    <Popup
+                      modal
+                      trigger={
+                        <td className="cursor">
+                          {user.type ? "Admin" : "Staff"}
+                        </td>
+                      }
+                    >
+                      {(close) => (
+                        <DetailPopUp close={close} user={user}></DetailPopUp>
+                      )}
                     </Popup>
 
                     <td id="userListLastTd">
@@ -159,9 +180,22 @@ export default function Index(props) {
                       />
                     </td>
                     <td id="userListLastTd">
-                      <Popup modal trigger={<FontAwesomeIcon icon={faTimesCircle} color="red" className="cursor"/>}>
+                      <Popup
+                        modal
+                        trigger={
+                          <FontAwesomeIcon
+                            icon={faTimesCircle}
+                            color="red"
+                            className="cursor"
+                          />
+                        }
+                      >
                         {(close) => (
-                         <DisablePopUp close={close} userId={user.id} onDisableUser={onDisableUser}></DisablePopUp>
+                          <DisablePopUp
+                            close={close}
+                            userId={user.id}
+                            onDisableUser={onDisableUser}
+                          ></DisablePopUp>
                         )}
                       </Popup>
                     </td>

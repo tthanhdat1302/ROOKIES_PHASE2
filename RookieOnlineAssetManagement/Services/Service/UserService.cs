@@ -30,12 +30,12 @@ namespace RookieOnlineAssetManagement.Services.Service
             _userManager = userManager;
         }
 
-        public async Task<IEnumerable<UserModel>> GetUsers()
+        public async Task<IEnumerable<UserModel>> GetUsers(string location)
         {
             return await _dbContext.Users
                 .Select(x => new UserModel { Id = x.Id, StaffCode = x.StaffCode, FirstName = x.FirstName, LastName = x.LastName,
                 UserName = x.UserName, DateOfBirth = x.DateOfBirth, Gender = x.Gender, JoinedDate = x.JoinedDate, Type = x.Type,
-                Disable = x.Disable, Location = x.Location }).Where(x => x.Disable == false)
+                Disable = x.Disable, Location = x.Location }).Where(x => x.Disable == false &&x.Location.Equals(location))
                 .ToListAsync();
         }
         public async Task<UserModel> GetUsersById(int id)
@@ -80,7 +80,7 @@ namespace RookieOnlineAssetManagement.Services.Service
                 Disable = false,
                 Location = createUserModel.Location
             };
-            var subString=user.DateOfBirth.ToString().Substring(0,8);
+            var subString=user.DateOfBirth.ToString().Substring(0,9);
             var split=subString.Split("/");
             split[0]=split[0].PadLeft(2,'0');
             split[1]=split[1].PadLeft(2,'0');
