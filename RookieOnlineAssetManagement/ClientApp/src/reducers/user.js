@@ -3,7 +3,7 @@ import * as userManage from "../contains/ManageUser";
 const initialState = {
   userList: [],
   userSelected: {},
-  userLogin:{}
+  userLogin: {},
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -17,6 +17,7 @@ export default (state = initialState, { type, payload }) => {
       return { ...state };
     }
     case userManage.ADD_USER: {
+      console.log(payload);
       state.userList = state.userList.push(payload);
       return { ...state };
     }
@@ -28,9 +29,9 @@ export default (state = initialState, { type, payload }) => {
       state.userList = state.userList.filter((x) => x.id != payload);
       return { ...state };
     }
-    case userManage.GET_USER_LOGIN:{
-      state.userLogin=payload;
-      return {...state};
+    case userManage.GET_USER_LOGIN: {
+      state.userLogin = payload;
+      return { ...state };
     }
     default:
       return state;

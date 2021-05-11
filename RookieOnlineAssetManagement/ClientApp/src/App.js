@@ -21,7 +21,7 @@ import ManageUsersPage from "./components/users/Index";
 import CreateUserPage from "./components/users/CreateUser";
 import EditUserPage from "./components/users/EditUser";
 
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as userManage from "./actions/user";
 import axios from "axios";
 import "./App.css";
@@ -48,35 +48,45 @@ function App() {
   useEffect(() => {
     dispatch(userManage.get_user_login());
   }, []);
-  const getUserList = useSelector((state) => state.user.userLogin);
-  let userLogin = getUserList;
+  const getUserLogin = useSelector((state) => state.user.userLogin);
+  let userLogin = getUserLogin;
   return (
     <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={HomePage}></Route>
+      {userLogin.type == true ? (
+        <Switch>
+          <Route exact path="/" component={HomePage}></Route>
 
-        <Route exact path="/asset" component={AssetPage}></Route>
-        <Route path="/asset/create" component={CreateAssetPage}></Route>
-        <Route path="/asset/edit/:id" component={EditAssetPage}></Route>
+          <Route exact path="/asset" component={AssetPage}></Route>
+          <Route path="/asset/create" component={CreateAssetPage}></Route>
+          <Route path="/asset/edit/:id" component={EditAssetPage}></Route>
 
-        <Route exact path="/assignment" component={AssignmentPage}></Route>
-        <Route
-          path="/assignment/create"
-          component={CreateAssignmentPage}
-        ></Route>
-        <Route
-          path="/assignment/edit/:id"
-          component={EditAssignmentPage}
-        ></Route>
+          <Route exact path="/assignment" component={AssignmentPage}></Route>
+          <Route
+            path="/assignment/create"
+            component={CreateAssignmentPage}
+          ></Route>
+          <Route
+            path="/assignment/edit/:id"
+            component={EditAssignmentPage}
+          ></Route>
 
-        <Route exact path="/report" component={ReportPage}></Route>
+          <Route exact path="/report" component={ReportPage}></Route>
 
-        <Route exact path="/return" component={ReturnRequestPage}></Route>
+          <Route exact path="/return" component={ReturnRequestPage}></Route>
 
-        <Route exact path="/user"><ManageUsersPage userLogin={userLogin}></ManageUsersPage></Route>
-        <Route path="/user/create" ><CreateUserPage userLogin={userLogin}></CreateUserPage></Route>
-        <Route path="/user/edit/:id" component={EditUserPage}></Route>
-      </Switch>
+          <Route exact path="/user">
+            <ManageUsersPage userLogin={userLogin}></ManageUsersPage>
+          </Route>
+          <Route path="/user/create">
+            <CreateUserPage userLogin={userLogin}></CreateUserPage>
+          </Route>
+          <Route path="/user/edit/:id" component={EditUserPage}></Route>
+        </Switch>
+      ) : (
+        <Switch>
+          <Route exact path="/" component={HomePage}></Route>
+        </Switch>
+      )}
     </BrowserRouter>
   );
 }
