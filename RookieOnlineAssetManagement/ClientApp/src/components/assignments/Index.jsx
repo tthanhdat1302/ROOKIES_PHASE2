@@ -5,12 +5,14 @@ import "../../css/user_css/index.css";
 import {
   faPen,
   faTimesCircle,
-  faSearch,
+  faSearch,faUndoAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Popup from "reactjs-popup";
 import DateTimePicker from "react-datetime-picker";
 import {useHistory} from 'react-router-dom';
+import ReturnPopup from '../home/ReturnPopUp';
+import DeletePopup from './DeletePopUp'
 
 export default function Index(props) {
   props.setPageName("Manage Assignment");
@@ -66,8 +68,11 @@ export default function Index(props) {
                 <td>Accepted</td>
                 <td id="userListLastTd"><FontAwesomeIcon icon={faPen} className="cursor" onClick={()=>history.push('/assignment/edit/1')}/></td>
                 <td id="userListLastTd">
-                  <Popup modal trigger={ <FontAwesomeIcon icon={faTimesCircle} color="rgb(207, 35, 56)" className="cursor"/>}>ABC</Popup>
+                  <Popup modal trigger={ <FontAwesomeIcon icon={faTimesCircle} color="rgb(207, 35, 56)" className="cursor"/>}>  
+                  {close=><DeletePopup close={close}></DeletePopup>}</Popup>
                 </td>
+                <td id="userListLastTd"><Popup modal trigger={ <FontAwesomeIcon icon={faUndoAlt}  color="blue" className="cursor"/>}>
+                  {close=><ReturnPopup close={close}></ReturnPopup>}</Popup></td>
               </tr>
           </tbody>
         </Table>
