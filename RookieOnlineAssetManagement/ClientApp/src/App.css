@@ -38,3 +38,14 @@ input[type="radio"]:focus{
   box-shadow: 1px 1px white;
 }
 
+.react-datetimepicker {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8rem;
+  background-color: #a66;
+  color: #000;
+  border: 0px;
+  border-radius: 0;
+  display: inline-block;
+  position: relative;
+}
+

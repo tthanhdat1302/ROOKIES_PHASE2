@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Header from "../fragments/Header";
-import LeftSesstion from "../fragments/LeftSession";
 import { useDispatch, useSelector } from "react-redux";
 import * as userManage from "../../actions/user";
 import Select from "react-select";
@@ -16,7 +14,6 @@ import { useHistory } from "react-router-dom";
 import Popup from "reactjs-popup";
 import DisablePopUp from "./DisablePopUp";
 import DetailPopUp from "./DetailPopUp";
-import user from "../../reducers/user";
 
 export default function Index(props) {
   props.setPageName("Manage User");
@@ -99,7 +96,8 @@ export default function Index(props) {
               onChange={onFilterType}
             ></Select>
           </div>
-          <div className="col-6" id="searchInput">
+          <div className="col-2"></div>
+          <div className="col-4" id="searchInput">
             <Input onChange={onChangeSearch}></Input>
             <Button color="primary" onClick={BtnSearch}>
               <FontAwesomeIcon icon={faSearch} />

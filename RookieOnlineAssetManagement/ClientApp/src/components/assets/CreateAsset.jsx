@@ -1,6 +1,4 @@
 import React from "react";
-import Header from "../fragments/Header";
-import LeftSesstion from "../fragments/LeftSession";
 
 export default function CreateAsset(props) {
   props.setPageName("Manage Asset > Create New Asset");

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Header from "../fragments/Header";
-import LeftSesstion from "../fragments/LeftSession";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import * as userManage from "../../actions/user";
@@ -87,14 +85,28 @@ export default function CreateUser(props) {
   useEffect(() => {
     setCreateUser({
       ...createUser,
-      DateOfBirth: dateOfBirth != null ? new Date(dateOfBirth.getFullYear(),dateOfBirth.getMonth(),dateOfBirth.getDate()+1) : null,
+      DateOfBirth:
+        dateOfBirth != null
+          ? new Date(
+              dateOfBirth.getFullYear(),
+              dateOfBirth.getMonth(),
+              dateOfBirth.getDate() + 1
+            )
+          : null,
     });
   }, [dateOfBirth]);
 
   useEffect(() => {
     setCreateUser({
       ...createUser,
-      JoinedDate: joinedDate != null ? new Date(joinedDate.getFullYear(),joinedDate.getMonth(),joinedDate.getDate()+1) : null,
+      JoinedDate:
+        joinedDate != null
+          ? new Date(
+              joinedDate.getFullYear(),
+              joinedDate.getMonth(),
+              joinedDate.getDate() + 1
+            )
+          : null,
     });
   }, [joinedDate]);
 

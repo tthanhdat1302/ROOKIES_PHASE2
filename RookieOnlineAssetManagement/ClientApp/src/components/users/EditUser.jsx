@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Header from "../fragments/Header";
-import LeftSesstion from "../fragments/LeftSession";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as userManage from "../../actions/user";
@@ -35,7 +33,7 @@ export default function UpdateUser(props) {
     if (userByid.joinedDate != undefined)
       setJoinedDate(new Date(userByid.joinedDate));
   }, [userByid]);
- 
+
   const [updateUser, setUpdateUser] = useState({
     DateOfBirth: null,
     JoinedDate: null,
@@ -48,8 +46,8 @@ export default function UpdateUser(props) {
       ...updateUser,
       Gender: userByid.gender,
       Type: userByid.type,
-      DateOfBirth:new Date(userByid.dateOfBirth),
-      JoinedDate:new Date(userByid.joinedDate)
+      DateOfBirth: new Date(userByid.dateOfBirth),
+      JoinedDate: new Date(userByid.joinedDate),
     });
   }, [userByid]);
 
@@ -98,14 +96,28 @@ export default function UpdateUser(props) {
   useEffect(() => {
     setUpdateUser({
       ...updateUser,
-      DateOfBirth: stateDateOfBirth != null ? new Date(stateDateOfBirth.getFullYear(),stateDateOfBirth.getMonth(),stateDateOfBirth.getDate()+1) : null,
+      DateOfBirth:
+        stateDateOfBirth != null
+          ? new Date(
+              stateDateOfBirth.getFullYear(),
+              stateDateOfBirth.getMonth(),
+              stateDateOfBirth.getDate() + 1
+            )
+          : null,
     });
   }, [stateDateOfBirth]);
 
   useEffect(() => {
     setUpdateUser({
       ...updateUser,
-      JoinedDate: stateJoinedDate != null ? new Date(stateJoinedDate.getFullYear(),stateJoinedDate.getMonth(),stateJoinedDate.getDate()+1) : null,
+      JoinedDate:
+        stateJoinedDate != null
+          ? new Date(
+              stateJoinedDate.getFullYear(),
+              stateJoinedDate.getMonth(),
+              stateJoinedDate.getDate() + 1
+            )
+          : null,
     });
   }, [stateJoinedDate]);
 
