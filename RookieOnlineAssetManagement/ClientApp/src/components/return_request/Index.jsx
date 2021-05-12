@@ -32,7 +32,7 @@ export default function Index(props) {
             ></DateTimePicker>
           </div>
           <div className="col-4"></div>
-          <div className="col-4" id="searchInput">
+          <div className="col-3" id="searchInput">
             <Input></Input>
             <Button color="primary">
               <FontAwesomeIcon icon={faSearch} />
