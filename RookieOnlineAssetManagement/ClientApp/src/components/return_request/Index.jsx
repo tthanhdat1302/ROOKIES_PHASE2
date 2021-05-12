@@ -29,6 +29,7 @@ export default function Index(props) {
               format="dd/MM/y"
               clearIcon
               className="dateTimeCreateUser"
+              placeholder="Returned Date"
             ></DateTimePicker>
           </div>
           <div className="col-4"></div>
