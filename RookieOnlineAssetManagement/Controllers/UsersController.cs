@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RookieOnlineAssetManagement.Data;
-using RookieOnlineAssetManagement.Entities;
-using RookieOnlineAssetManagement.Models.User;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +12,7 @@ using System.Security.Claims;
 using RookieOnlineAssetManagement.Models;
 using System;
 using EnumsNET;
+using RookieOnlineAssetManagement.Shared.ViewModel;
 
 namespace RookieOnlineAssetManagement.Controllers
 {
@@ -23,81 +22,36 @@ namespace RookieOnlineAssetManagement.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserService _userService;
-        private readonly ILogger _logger;
+        private readonly IUserDF _repo;
+        public UsersController(IUserDF repo)
+        {
+            _repo = repo;
 
-        public UsersController(IUserService userService, ILogger<UsersController> logger)
-        {
-            _userService = userService;
-            _logger = logger;
-        }
-
-        [HttpPost]
-        [Route("getusers")]
-        public async Task<ActionResult<IEnumerable<UserModel>>> GetUsers([FromBody] UserModel user)
-        {
-            var result = await _userService.GetUsers(user.Location);
-            return Ok(result);
-        }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserModel>> GetUsersById(int id)
-        {
-            return await _userService.GetUsersById(id);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> CreateUser(CreateUserModel createUserModel)
-        {
-            await _userService.CreateUser(createUserModel);
-            return Ok();
-        }
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUser(int id, CreateUserModel createUserModel)
-        {
-            await _userService.UpdateUser(id, createUserModel);
-            return Ok();
-        }
-
-        [HttpPut]
-        [Route("disable/{id}")]
-        public async Task<ActionResult> DisableUser(int id)
-        {
-            await _userService.DisableUser(id);
-            return Ok();
         }
         [HttpGet]
-        [Route("iduserlogin")]
-        public string GetIdUserLogin()
+        public IActionResult Index()
         {
+            string userId = _repo.getUserID();
 
-            return _userService.GetIdUserLogin();
+            return Ok(userId);
         }
-        [HttpGet]
-        [Route("infouserlogin")]
-        public async Task<ActionResult> GetInfoUserLogin()
+        [HttpGet("infoUser")]
+        public async Task<IActionResult> infoUser()
         {
+            var user = await _repo.getInfoUser();
 
-          return Ok(await _userService.GetInfoUserLogin());
+            return Ok(user);
         }
-        [HttpGet("getState")]
-        public async  Task<ActionResult<StateList>> StateList()
-        {        
+        [HttpGet("listUser")]
+        public async Task<ActionResult<IList<UserListInfo>>> ListinfoUser()
+        {
+            var user = await _repo.getListUser();
 
-
-            List<StateList> list = new List<StateList>();
-            for (int i = 0; i < Enum.GetNames(typeof(StateAsset)).Length; i++)
-            {
-                list.Add(new StateList
-                {
-                    key = i,
-                    name = ((StateAsset)i).AsString(EnumFormat.Description)
-                });
-            }
-            return Ok(list);
+            return Ok(user);
         }
-
-
-
     }
+
+
+
+
 }

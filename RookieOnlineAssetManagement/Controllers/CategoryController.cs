@@ -1,58 +1,82 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RookieOnlineAssetManagement.Entities;
 using RookieOnlineAssetManagement.Models;
 using RookieOnlineAssetManagement.Services.Interface;
+using RookieOnlineAssetManagement.Share.Repo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace RookieOnlineAssetManagement.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-
+    [Authorize("Bearer")]
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public class CategoryController : Controller
     {
-        private readonly ICaTegoryRepository _repo;
-        public CategoryController(ICaTegoryRepository repo)
+        private readonly ICategory _repo;
+        public CategoryController(ICategory repo)
         {
             _repo = repo;
         }
+
+
         [HttpPost]
-        public async Task<ActionResult<MessageModel>> AddCategory(CategoryRequestModel model)
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<CategoryRequest>> Create(CategoryRequest category)
         {
-            var messgae = new MessageModel();
-            var result =  _repo.AddCategory(model);
-            if (result == 0)
+            Category newItem = new Category()
             {
-                messgae.Message = "Category is already existed. Please enter a different category";
-            }
-            else if (result == 1)
-            {
-                messgae.Message = "Prefix is already existed. Please enter a different prefix";
+                CategoryName = category.CategoryName,
 
-            }
-            else
-            {
-                messgae.Message = "Success";
-            }
+                CategoryDescription = category.CategoryDescription,
+            };
 
-            return Ok(messgae);
-        }
-        [HttpGet("/categorylist")]
-        public async Task<ActionResult<MessageModel>> GetCategoryList()
-        {
-            var result = await _repo.GetCategoryList();
+            var result = await _repo.addCategory(newItem);
 
             return Ok(result);
         }
 
+        // POST: CategoryController/Create
+        [HttpPut]
+        [Authorize(Roles = "admin")]
+
+        public async Task<ActionResult<Category>> Edit(Category category)
+        {
+            var result = await _repo.updateCategory(category);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<List<Category>> Get()
+        {
+
+            return await _repo.GetCategoryList();
+
+        }
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Category>> GetbyID(int id)
+        {
+            var category = await _repo.getCategorybyID(id);
+
+            if (category == null)
+            {
+
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.NotFound);
+
+                return Ok(result);
+            }
+            return Ok(category);
+        }
+
 
     }
-
-  
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using RookieOnlineAssetManagement.Entities;
+using RookieOnlineAssetManagement.Models;
 
 namespace RookieOnlineAssetManagement.Areas.Identity.Pages.Account
 {

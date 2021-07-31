@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RookieOnlineAssetManagement.Data;
-using RookieOnlineAssetManagement.Entities;
+
 
 [assembly: HostingStartup(typeof(RookieOnlineAssetManagement.Areas.Identity.IdentityHostingStartup))]
 namespace RookieOnlineAssetManagement.Areas.Identity

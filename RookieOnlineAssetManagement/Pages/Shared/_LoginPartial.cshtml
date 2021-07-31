@@ -1,8 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using RookieOnlineAssetManagement.Entities;
+@using RookieOnlineAssetManagement.Models
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
-
 @{
     string returnUrl = null;
     var query = ViewContext.HttpContext.Request.Query;
@@ -30,7 +29,7 @@
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@returnUrl">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login"asp-route-returnUrl="@returnUrl">Login</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@returnUrl">Login</a>
         </li>
     }
 </ul>

@@ -2,54 +2,38 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using RookieOnlineAssetManagement.Entities;
 using RookieOnlineAssetManagement.Models;
 
 namespace RookieOnlineAssetManagement.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
-        public DbSet<Asset> Assets { get; set; }
-        public DbSet<Assignment> Assignments { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Returning> Returnings { get; set; }
-         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Assignment>()
-                .HasOne(p => p.Borrower)
-                .WithMany(c => c.BorrowerAssets)
-                .HasForeignKey(m => m.BorrowerId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired();
 
-            modelBuilder.Entity<Assignment>()
-               .HasOne(p => p.Lender)
-               .WithMany(c => c.LenderAssets)
-               .HasForeignKey(m => m.LenderId)
-               .OnDelete(DeleteBehavior.Restrict)
-               .IsRequired();
-            modelBuilder.Entity<Returning>()
-               .HasOne(p => p.UserAccept)
-               .WithMany(c => c.UserAcceptAssets)
-               .HasForeignKey(m => m.UserAccepteId)
-               .OnDelete(DeleteBehavior.Restrict)
-               .IsRequired();
-            var hasher = new PasswordHasher<User>();
-            modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, StaffCode = "SD0001", Gender = true, Type = true, DateOfBirth = new DateTime(1999, 2, 13), 
-                JoinedDate = new DateTime(2021, 3, 15), UserName = "dattt", PasswordHash = hasher.HashPassword(null, "dattt@123"),
-                FirstName = "Dat", LastName = "Tran Thanh",Location="HCM",NormalizedUserName="DATTT",Email="dattt",
-                NormalizedEmail="DATT",SecurityStamp = string.Empty, EmailConfirmed = true,});
-            modelBuilder.Entity<User>().HasData(
-                new User { Id = 2, StaffCode = "SD0002", Gender = true, Type = true, DateOfBirth = new DateTime(1999, 2, 13), 
-                JoinedDate = new DateTime(2021, 3, 15), UserName = "vuongnv", PasswordHash = hasher.HashPassword(null, "vuongnv@123"), 
-                FirstName = "Vuong", LastName = "Nguyen Van",Location="HN",NormalizedUserName="VUONGNV",Email="vuongnv",
-                NormalizedEmail="VUONGNV",SecurityStamp = string.Empty, EmailConfirmed = true,});
+        
+            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+                : base(options)
+            {
+            }
+
+            protected override void OnModelCreating(ModelBuilder modelBuilder)
+            {
+                base.OnModelCreating(modelBuilder);
+
+                modelBuilder.Entity<Cart>().HasKey(sc => new { sc.ProductId, sc.UserId });
+               
+                modelBuilder.Entity<Category>().HasData(
+                   new Category { Id = 3, CategoryName = "Foreign", CategoryDescription = "Foreign language books are original books produced in foreign countries" },
+                   new Category { Id = 4, CategoryName = "Cookbooks", CategoryDescription = "a book containing recipes and other information about the preparation and cooking of food." },
+                   new Category { Id = 5, CategoryName = "Comics", CategoryDescription = "causing or meant to cause laughter." });
+            }
+            public DbSet<Product> Products { get; set; }
+
+            public DbSet<Cart> Carts { get; set; }
+            public DbSet<Category> Categories { get; set; }
+            public DbSet<User> Users { get; set; }
+            public DbSet<Order> Order { get; set; }
+            public DbSet<OrderDetails> OrderDetails { get; set; }
+         
+            public DbSet<ProductImages> ProductImages { get; set; }
         }
     }
-}
